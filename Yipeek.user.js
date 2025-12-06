@@ -2,7 +2,7 @@
 // @name         Yipeek
 // @name:zh-CN   一瞥
 // @namespace    https://github.com/Chumor/Yipeek
-// @version      1.0.0
+// @version      1.1.0
 // @description  "指尖轻触，万象凝于一瞥。A tap, a glimpse — the world in focus."
 // @author       Chumor
 // @match        *://*/*
@@ -75,29 +75,28 @@
             position: absolute;
             top: 8px;
             right: 8px;
-            width: 56px;
-            height: 56px;
+            width: 48px;
+            height: 48px;
             display: flex;
             justify-content: center;
             align-items: center;
             z-index: 1000;
             pointer-events: auto;
         `;
-
         // 关闭按钮
         const closeButton = document.createElement('div');
         closeButton.innerHTML = '×';
         closeButton.style.cssText = `
             position: relative;
-            width: 36px;
-            height: 36px;
+            width: 32px;
+            height: 32px;
             border-radius: 50%;
             background: rgba(30, 30, 30, 0.8);
             color: white;
             display: flex;
             align-items: center;
             justify-content: center;
-            font-size: 24px;
+            font-size: 22px;
             cursor: pointer;
             opacity: 0.9;
             transition: all 0.2s ease;
@@ -187,7 +186,7 @@
         // 加载指示器
         const loading = document.createElement('div');
         loading.id = 'image-preview-loading';
-        loading.textContent = 'Loading...';
+        loading.textContent = '加载中...';
         loading.style.cssText = `
             position: absolute;
             top: 50%;
@@ -255,7 +254,7 @@
         const infoHeight = 40;
 
         containerWidth = window.innerWidth * 0.95;
-        containerHeight = window.innerHeight * 0.85; 
+        containerHeight = window.innerHeight * 0.85;
 
         // 屏幕适配
         if (containerWidth > window.innerWidth) containerWidth = window.innerWidth;
@@ -622,15 +621,25 @@
     function initImageHandlers() {
         // 收集所有可点击的图片
         const allImages = document.querySelectorAll('img');
-
+        // 过滤可预览图片
         imageList = Array.from(allImages).filter(img => {
-            return !img.closest('a') ||
-                (img.closest('a') && !img.closest('a').hasAttribute('data-preview-ignore'));
+            const rect = img.getBoundingClientRect();
+            if (rect.width <= 48 && rect.height <= 48) return false;
+            const parent = img.parentElement;
+            if (parent) {
+                const cls = parent.className || '';
+                const isUIContainer = /to-|goto-|go-|jump-|nav|menu|btn|icon|tab|toolbar|sidebar/i.test(cls);
+                if (isUIContainer && !img.alt && !img.title) return false;
+            }
+            const parentLink = img.closest('a');
+            if (
+                (parentLink && parentLink.hasAttribute('data-preview-ignore')) ||
+                img.closest('[data-yipeek-ignore]')
+            ) return false;
+            return true;
         });
-
         imageList.forEach(img => {
             if (img.dataset.yipeekBound) return;
-
             img.addEventListener('click', function(e) {
                 // 检查是否在链接内
                 const parentLink = img.closest('a');
@@ -644,7 +653,6 @@
                         passive: false
                     });
                 }
-
                 // 显示预览
                 if (!isPreviewMode) {
                     e.preventDefault();
@@ -654,10 +662,10 @@
             }, {
                 passive: false
             });
-
             img.dataset.yipeekBound = 'true';
         });
     }
+
 
     // 监听DOM变化
     const observer = new MutationObserver(() => {
