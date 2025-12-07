@@ -2,7 +2,7 @@
 // @name         Yipeek
 // @name:zh-CN   一瞥
 // @namespace    https://github.com/Chumor/Yipeek
-// @version      1.1.0
+// @version      1.2.0
 // @description  "指尖轻触，万象凝于一瞥。A tap, a glimpse — the world in focus."
 // @author       Chumor
 // @match        *://*/*
@@ -65,23 +65,24 @@
             touch-action: none;
             backdrop-filter: blur(12px);
             -webkit-backdrop-filter: blur(12px);
-            pointer-events: none;
+            pointer-events: auto;
             box-shadow: 0 4px 24px rgba(0, 0, 0, 0.2);
         `;
 
         // 关闭按钮容器
         const closeButtonContainer = document.createElement('div');
         closeButtonContainer.style.cssText = `
-            position: absolute;
-            top: 8px;
-            right: 8px;
+            position: fixed;
+            top: 16px;
+            right: 16px;
             width: 48px;
             height: 48px;
             display: flex;
             justify-content: center;
             align-items: center;
-            z-index: 1000;
+            z-index: 2147483647;
             pointer-events: auto;
+            transform: translateZ(0);
         `;
         // 关闭按钮
         const closeButton = document.createElement('div');
@@ -136,7 +137,7 @@
             justify-content: center;
             width: 100%;
             height: 100%;
-            overflow: hidden;
+            overflow: visible;
             pointer-events: auto;
         `;
 
@@ -628,8 +629,12 @@
             const parent = img.parentElement;
             if (parent) {
                 const cls = parent.className || '';
-                const isUIContainer = /to-|goto-|go-|jump-|nav|menu|btn|icon|tab|toolbar|sidebar/i.test(cls);
-                if (isUIContainer && !img.alt && !img.title) return false;
+                // 无条件忽略
+                if (/logo|kmlogo/i.test(cls)) return false;
+
+                // 规则忽略
+                const isOtherUI = /to-|goto-|go-|jump-|nav|menu|btn|icon|header|footer|aside|navbar|avatar|ad|banner|sponsor|watermark|placeholder|skeleton/i.test(cls);
+                if (isOtherUI && !img.alt && !img.title) return false;
             }
             const parentLink = img.closest('a');
             if (
@@ -641,10 +646,12 @@
         imageList.forEach(img => {
             if (img.dataset.yipeekBound) return;
             img.addEventListener('click', function(e) {
-                // 检查是否在链接内
+                // 预览功能兜底
+                e.preventDefault();
+                e.stopPropagation();
+
                 const parentLink = img.closest('a');
                 if (parentLink) {
-                    e.stopPropagation();
                     parentLink.addEventListener('click', function(e2) {
                         e2.preventDefault();
                         e2.stopPropagation();
@@ -653,10 +660,8 @@
                         passive: false
                     });
                 }
-                // 显示预览
+
                 if (!isPreviewMode) {
-                    e.preventDefault();
-                    e.stopPropagation();
                     previewImageFn(img);
                 }
             }, {
