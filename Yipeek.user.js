@@ -2,7 +2,7 @@
 // @name         Yipeek
 // @name:zh-CN   一瞥
 // @namespace    https://github.com/Chumor/Yipeek
-// @version      1.2.0
+// @version      1.2.1
 // @description  "指尖轻触，万象凝于一瞥。A tap, a glimpse — the world in focus."
 // @author       Chumor
 // @match        *://*/*
@@ -630,9 +630,9 @@
             if (parent) {
                 const cls = parent.className || '';
                 // 无条件忽略
-                if (/logo|kmlogo/i.test(cls)) return false;
+                if (/logo|kmlogo|btn|button|oauth/i.test(cls)) return false;
 
-                // 规则忽略
+                // 条件忽略
                 const isOtherUI = /to-|goto-|go-|jump-|nav|menu|btn|icon|header|footer|aside|navbar|avatar|ad|banner|sponsor|watermark|placeholder|skeleton/i.test(cls);
                 if (isOtherUI && !img.alt && !img.title) return false;
             }
