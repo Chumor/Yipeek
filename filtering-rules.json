@@ -1,0 +1,79 @@
+{
+  "_comment": "Yipeek 图片过滤规则配置",
+
+  "_comment_size": "忽略小于此尺寸的图片",
+  "minWidth": 48,
+  "minHeight": 48,
+
+  "_comment_ignoreParentClasses": "父元素 class 匹配则忽略图片",
+  "ignoreParentClasses": [
+    "logo",
+    "kmlogo",
+    "btn",
+    "button",
+    "oauth",
+    "qq_login",
+    "weixin",
+    "wechat",
+    "weibo",
+    "connect",
+    "login",
+    "signin",
+    "img-box",
+    "el-image",
+    "g-df-c",
+    "to-",
+    "goto-",
+    "go-",
+    "jump-",
+    "nav",
+    "menu",
+    "icon",
+    "header",
+    "footer",
+    "aside",
+    "navbar",
+    "avatar",
+    "ad",
+    "banner",
+    "sponsor",
+    "watermark",
+    "placeholder",
+    "skeleton",
+    "newspecial",
+    "misc",
+    "action=nav",
+    "post",
+    "thread",
+    "forum"
+  ],
+
+  "_comment_ignoreParentClassesRegex": "额外父元素 class 匹配规则",
+  "ignoreParentClassesRegex": [
+    "ignore-preview",
+    "no-preview"
+  ],
+
+  "_comment_ignoreLinks": "链接匹配或有指定属性时忽略",
+  "ignoreLinkPatterns": [
+    "connect\\.php\\?mod=login",
+    "oauth",
+    "social",
+    "signin",
+    "login",
+    "qq_login",
+    "weixin",
+    "misc.*action=nav",
+    "newspecial",
+    "pn_post"
+  ],
+  "ignoreLinkAttribute": "data-preview-ignore",
+
+  "_comment_ignoreDataAttributes": "包含以下属性则忽略",
+  "ignoreDataAttributes": [
+    "data-no-preview"
+  ],
+
+  "_comment_ignoreOnClick": "图片或父节点有 onclick 属性忽略",
+  "ignoreOnClick": true
+}
