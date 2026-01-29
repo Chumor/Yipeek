@@ -1,5 +1,9 @@
 # Yipeek · 一瞥
 
+![Yipeek 图标](https://github.com/Chumor/Yipeek/blob/dev/assets/google-photos-128.png)
+
+<a href="https://www.flaticon.com/free-icons/google-photos" title="google photos icons">Google photos icons created by Freepik - Flaticon</a>
+
 [![Version](https://img.shields.io/github/v/release/Chumor/yipeek?color=007ACC)](https://github.com/Chumor/yipeek/releases)  
 [![Android Friendly](https://img.shields.io/badge/platform-Android-brightgreen.svg)](#)  
 [![UserScript](https://img.shields.io/badge/type-UserScript-yellow.svg)](#)  
@@ -32,10 +36,10 @@ Yipeek 是一款 **网页专用脚本**，专注移动端手势图片预览：�
 - 🎯 **智能初始尺寸 & 居中** — 自动适配屏幕，防止裁切或过度缩放  
 - 🫧 **沉浸式预览体验** — 高斯模糊背景，禁用底层交互，避免误触  
 - 🔄 **动态图片自动绑定** — 支持异步加载的图片，实时监控 DOM 变化  
-- 🛠️ **可扩展性** — 可定制 `normalizeImageUrl()` 适配其他网站
-- 🔍 智能图标忽略 — 自动跳过 logo、导航按钮等非内容图（无需配置）
-- 🔗 链接拦截保障 — 点击 `<a><img>` 时优先预览，不跳转页面
-- 🚫 显式忽略支持 — 任意元素加 `data-yipeek-ignore` 即可全局禁用预览
+- 🛠️ **可扩展性** — 可定制 `normalizeImageUrl()` 适配其他网站  
+- 🔍 **智能图标忽略** — 自动跳过 logo、导航按钮等非内容图（无需配置）  
+- 🔗 **链接拦截保障** — 点击 `<a><img>` 时优先预览，不跳转页面  
+- 🚫 **显式忽略支持** — 任意元素加 `data-yipeek-ignore` 即可全局禁用预览  
 
 ---
 
@@ -74,9 +78,9 @@ MIT License — 免费用于个人和商业项目
 
 ---
 
-## ❤️ 致谢
+## ❤️ 说明
 
-Yipeek 从零设计，专注「指尖轻触，万象凝于一瞥」的**移动端原生**体验。  
+- 图标来源已在 README 上方注明官方署名  
+- Yipeek 专注「指尖轻触，万象凝于一瞥」的**移动端原生**体验  
 
-> **一瞥**，不仅是预览——它是专注、尊重与轻盈的用户体验。  
 > 欢迎 Star ⭐、Issue、PR —— 让每一次指尖轻触，都更接近完美。

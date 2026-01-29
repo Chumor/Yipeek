@@ -2,12 +2,14 @@
 // @name         Yipeek
 // @name:zh-CN   一瞥
 // @namespace    https://github.com/Chumor/Yipeek
-// @version      1.3.0
+// @version      1.4.0
 // @description  "指尖轻触，万象凝于一瞥。A tap, a glimpse — the world in focus."
 // @author       Chumor
 // @match        *://*/*
-// @grant        none
+// @grant        GM_getResourceText
 // @run-at       document-end
+// @resource     filteringRules https://raw.githubusercontent.com/Chumor/Yipeek/dev/filtering-rules.json
+// @icon         https://cdn.jsdelivr.net/gh/Chumor/Yipeek@dev/assets/google-photos-128.png
 // @downloadURL  https://cdn.jsdelivr.net/gh/Chumor/Yipeek@main/Yipeek.user.js
 // @updateURL    https://cdn.jsdelivr.net/gh/Chumor/Yipeek@main/Yipeek.meta.js
 // @homepage     https://github.com/Chumor/Yipeek
@@ -17,8 +19,75 @@
 (function() {
     'use strict';
 
-    const DEBUG_MODE = false; // 是否开启调试模式，用于输出日志
+    // 调试与版本信息
+    const DEBUG_MODE = false; // 是否开启调试模式（true = 开启）
     const VERSION = typeof GM_info !== 'undefined' ? GM_info.script.version : 'unknown';
+
+    // 加载外部 JSON 过滤规则
+    let filteringRules = [];
+    try {
+        const rulesText = GM_getResourceText('filteringRules'); // 读取外部 JSON
+        filteringRules = JSON.parse(rulesText || '{}');
+
+        // DEBUG 模式下打印规则对象
+        if (DEBUG_MODE) console.log('[Yipeek] 过滤规则对象 →', filteringRules);
+
+        // 输出规则信息
+        const metaVersion = filteringRules._meta?.version || 'unknown';
+
+        const parentClassesCount = filteringRules.ignoreParentClasses?.length || 0;
+        const parentClassesRegexCount = filteringRules.ignoreParentClassesRegex?.length || 0;
+        const linkPatternsCount = filteringRules.ignoreLinkPatterns?.length || 0;
+        const dataAttrCount = filteringRules.ignoreDataAttributes?.length || 0;
+
+        console.log(
+            `[Yipeek] 过滤规则加载成功 · v${metaVersion} -> ` +
+            `ignoreParentClasses: ${parentClassesCount}, ` +
+            `ignoreParentClassesRegex: ${parentClassesRegexCount}, ` +
+            `ignoreLinkPatterns: ${linkPatternsCount}, ` +
+            `ignoreDataAttributes: ${dataAttrCount}, ` +
+            `ignoreOnClick: ${filteringRules.ignoreOnClick ? 1 : 0}`
+        );
+    } catch (e) {
+        console.warn('过滤规则加载失败', e);
+    }
+
+    // 过滤规则应用函数
+    function applyFilteringRules(img) {
+        if (!img || !filteringRules) return;
+
+        // 忽略小图片
+        if (img.naturalWidth < filteringRules.minWidth || img.naturalHeight < filteringRules.minHeight) {
+            img.style.display = 'none';
+            return;
+        }
+
+        // 忽略父元素 class
+        let parent = img.parentElement;
+        while (parent) {
+            if (filteringRules.ignoreParentClasses?.some(cls => parent.classList.contains(cls))) {
+                return;
+            }
+            if (filteringRules.ignoreParentClassesRegex?.some(rx => new RegExp(rx).test(parent.className))) {
+                return;
+            }
+            parent = parent.parentElement;
+        }
+
+        // 忽略链接属性
+        const link = img.closest('a');
+        if (link) {
+            if (filteringRules.ignoreLinkPatterns?.some(p => new RegExp(p).test(link.href))) return;
+            if (filteringRules.ignoreLinkAttribute && link.hasAttribute(filteringRules.ignoreLinkAttribute)) return;
+        }
+
+        // 忽略 data 属性
+        if (filteringRules.ignoreDataAttributes?.some(attr => img.hasAttribute(attr))) return;
+
+        // 忽略 onclick
+        if (filteringRules.ignoreOnClick && (img.onclick || img.parentElement?.onclick)) return;
+
+    }
 
     let isPreviewMode = false;
     let previewContainer = null;
@@ -189,9 +258,6 @@
             zoomIndicator.style.opacity = '0';
         }
 
-        if (DEBUG_MODE) {
-            console.log(`applyTransform -> X:${currentX.toFixed(1)}, Y:${currentY.toFixed(1)}, scale:${currentScale.toFixed(2)}, maxX:${maxX.toFixed(1)}, maxY:${maxY.toFixed(1)}`);
-        }
     }
 
     function updateBoundary() {
@@ -470,26 +536,15 @@
 
     function initImageHandlers() {
         const allImages = document.querySelectorAll('img');
-        imageList = Array.from(allImages).filter(img => {
-            const rect = img.getBoundingClientRect();
-            if (rect.width <= 48 && rect.height <= 48) return false;
-            if (img.closest('[data-yipeek-ignore]') || img.hasAttribute('data-no-preview')) return false;
-            let el = img;
-            while (el && el !== document.body) {
-                if (el.hasAttribute('onclick')) return false;
-                el = el.parentElement;
-            }
-            const parent = img.parentElement;
-            if (parent) {
-                const cls = parent.className || '';
-                if (/logo|btn|button|oauth|login|signin|img-box|el-image/i.test(cls)) return false;
-            }
-            return true;
-        });
+        imageList = Array.from(allImages);
 
         imageList.forEach(img => {
             if (img.dataset.yipeekBound) return;
             img.dataset.yipeekBound = 'true';
+
+            // 如果图片匹配忽略规则，则不绑定预览
+            if (shouldIgnoreImage(img)) return;
+
             img.addEventListener('click', e => {
                 e.preventDefault();
                 e.stopPropagation();
@@ -498,6 +553,38 @@
                 passive: false
             });
         });
+    }
+
+    function shouldIgnoreImage(img) {
+        if (!img || !filteringRules) return false;
+
+        // 忽略小图片
+        if (img.naturalWidth < filteringRules.minWidth || img.naturalHeight < filteringRules.minHeight) {
+            return true;
+        }
+
+        // 忽略父元素 class
+        let parent = img.parentElement;
+        while (parent) {
+            if (filteringRules.ignoreParentClasses?.some(cls => parent.classList.contains(cls))) return true;
+            if (filteringRules.ignoreParentClassesRegex?.some(rx => new RegExp(rx).test(parent.className))) return true;
+            parent = parent.parentElement;
+        }
+
+        // 忽略链接属性
+        const link = img.closest('a');
+        if (link) {
+            if (filteringRules.ignoreLinkPatterns?.some(p => new RegExp(p).test(link.href))) return true;
+            if (filteringRules.ignoreLinkAttribute && link.hasAttribute(filteringRules.ignoreLinkAttribute)) return true;
+        }
+
+        // 忽略 data 属性
+        if (filteringRules.ignoreDataAttributes?.some(attr => img.hasAttribute(attr))) return true;
+
+        // 忽略 onclick
+        if (filteringRules.ignoreOnClick && (img.onclick || img.parentElement?.onclick)) return true;
+
+        return false;
     }
 
     const observer = new MutationObserver(() => {
@@ -540,5 +627,5 @@
     }
 
     init();
-    console.log(`Yipeek 一瞥 v${VERSION} - 指尖轻触，万象凝于一瞥`);
+    console.log(`[Yipeek] 一瞥 v${VERSION} - 指尖轻触，万象凝于一瞥`);
 })();

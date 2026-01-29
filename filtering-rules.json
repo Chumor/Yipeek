@@ -1,0 +1,77 @@
+{
+  "_meta": {
+    "name": "Yipeek 图片过滤规则",
+    "version": "2026-01-29.1",
+    "updated": "2026-01-29"
+  },
+
+  "minWidth": 48,
+  "minHeight": 48,
+
+  "ignoreParentClasses": [
+    "logo",
+    "kmlogo",
+    "btn",
+    "button",
+    "oauth",
+    "qq_login",
+    "weixin",
+    "wechat",
+    "weibo",
+    "connect",
+    "login",
+    "signin",
+    "img-box",
+    "el-image",
+    "g-df-c",
+    "to-",
+    "goto-",
+    "go-",
+    "jump-",
+    "nav",
+    "menu",
+    "icon",
+    "header",
+    "footer",
+    "aside",
+    "navbar",
+    "avatar",
+    "ad",
+    "banner",
+    "sponsor",
+    "watermark",
+    "placeholder",
+    "skeleton",
+    "newspecial",
+    "misc",
+    "action=nav",
+    "post",
+    "thread",
+    "forum"
+  ],
+
+  "ignoreParentClassesRegex": [
+    "ignore-preview",
+    "no-preview"
+  ],
+
+  "ignoreLinkPatterns": [
+    "connect\\.php\\?mod=login",
+    "oauth",
+    "social",
+    "signin",
+    "login",
+    "qq_login",
+    "weixin",
+    "misc.*action=nav",
+    "newspecial",
+    "pn_post"
+  ],
+
+  "ignoreLinkAttribute": "data-preview-ignore",
+  "ignoreDataAttributes": [
+    "data-no-preview"
+  ],
+
+  "ignoreOnClick": true
+}
