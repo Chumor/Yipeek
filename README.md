@@ -1,73 +1,94 @@
 # Yipeek · 一瞥
 
-![Yipeek 图标](https://github.com/Chumor/Yipeek/blob/dev/assets/google-photos-128.png)
-
-<a href="https://www.flaticon.com/free-icons/google-photos" title="google photos icons">Google photos icons created by Freepik - Flaticon</a>
-
-[![Version](https://img.shields.io/github/v/release/Chumor/yipeek?color=007ACC)](https://github.com/Chumor/yipeek/releases)  
-[![Android Friendly](https://img.shields.io/badge/platform-Android-brightgreen.svg)](#)  
-[![UserScript](https://img.shields.io/badge/type-UserScript-yellow.svg)](#)  
-[![MIT License](https://img.shields.io/badge/license-MIT-blue.svg)](https://opensource.org/licenses/MIT)  
-[![Stars](https://img.shields.io/github/stars/Chumor/yipeek?style=social)](https://github.com/Chumor/yipeek/stargazers)
-
 > **指尖轻触，万象凝于一瞥。**  
 > *A tap, a glimpse — the world in focus.*
 
-Yipeek 是一款 **网页专用脚本**，专注移动端手势图片预览：开箱即用，无需初始化或框架，极简流畅。
+![Yipeek 封面](https://socialify.git.ci/Chumor/Yipeek/image?description=1&font=Inter&language=1&logo=https%3A%2F%2Fgitlab.com%2Fchumoer%2FYipeek%2F-%2Fraw%2Fmain%2Fassets%2Fgoogle-photos-128.png&name=1&owner=1&pattern=Brick+Wall&theme=Auto)
+
+<p align="center">
+  <a href="https://github.com/Chumor/yipeek" title="GitHub 仓库">
+    <img src="https://img.shields.io/badge/GitHub-Chumor/Yipeek-181717?logo=github&style=flat-square">
+  </a>
+  <a href="https://gitlab.com/chumoer/Yipeek" title="GitLab 仓库">
+    <img src="https://img.shields.io/badge/GitLab-Yipeek-FC6D26?logo=gitlab&style=flat-square">
+  </a>
+  <a href="https://github.com/Chumor/yipeek/releases" title="Release">
+    <img src="https://img.shields.io/github/v/release/Chumor/yipeek?color=007ACC&style=flat-square">
+  </a>
+  <a href="https://opensource.org/licenses/MIT" title="MIT License">
+    <img src="https://img.shields.io/badge/license-MIT-blue?style=flat-square">
+  </a>
+  <img src="https://img.shields.io/badge/type-UserScript-yellow?style=flat-square" title="UserScript 脚本类型">
+</p>
+
+<p align="center">
+  <a href="https://greasyfork.org/zh-CN/scripts/557392-yipeek" title="Tampermonkey">
+    <img src="https://img.shields.io/badge/Tampermonkey-Install-339933?style=flat-square&logo=tampermonkey">
+  </a>
+  <a href="https://scriptcat.org/zh-CN/script-show-page/4750" title="ScriptCat">
+    <img src="https://img.shields.io/badge/ScriptCat-Install-FC6D26?style=flat-square&logo=scriptcase">
+  </a>
+</p>
+
+<a href="https://www.flaticon.com/free-icons/google-photos" title="google photos icons">Google photos icons created by Freepik - Flaticon</a>
+
+Yipeek 是一款 **网页专用脚本**，专注移动端手势图片预览：  
+开箱即用，无需初始化或框架，追求**极简、顺滑、原生**的操作体验。
 
 ---
 
-## 🎬 3 秒上手
+## 🎬 快速上手
 
-[Demo.webm](https://github.com/user-attachments/assets/55ecb6bc-71fe-419c-9529-0e0a3d2e5acd)
+[点击观看 Demo 视频](https://github.com/user-attachments/assets/55ecb6bc-71fe-419c-9529-0e0a3d2e5acd)
 
-**操作方式：** 点击 → 高斯模糊背景 → 手势缩放 → 下滑关闭  
+**操作方式**：点击 → 高斯模糊背景 → 手势缩放 → 下滑关闭  
 
-**安装方式：**  
+**安装方式**：  
 1. Tampermonkey / ScriptCat → 添加脚本  
-2. 打开网页，点击图片即可预览  
+2. 打开网页，点击图片即可预览
 
 ---
 
-## 🌟 核心特性
+## 核心特性
 
-- ⚡ **开箱即用** — 安装即可生效，无需任何配置  
-- 🤌 **移动端手势友好** — 双击缩放、双指捏合、单指拖拽、下滑/背景点击关闭  
-- 🎯 **智能初始尺寸 & 居中** — 自动适配屏幕，防止裁切或过度缩放  
-- 🫧 **沉浸式预览体验** — 高斯模糊背景，禁用底层交互，避免误触  
-- 🔄 **动态图片自动绑定** — 支持异步加载的图片，实时监控 DOM 变化  
-- 🛠️ **可扩展性** — 可定制 `normalizeImageUrl()` 适配其他网站  
-- 🔍 **智能图标忽略** — 自动跳过 logo、导航按钮等非内容图（无需配置）  
-- 🔗 **链接拦截保障** — 点击 `<a><img>` 时优先预览，不跳转页面  
-- 🚫 **显式忽略支持** — 任意元素加 `data-yipeek-ignore` 即可全局禁用预览  
+- **开箱即用** — 安装即可生效，无需任何配置
+- **移动端手势友好** — 支持双击缩放、双指捏合、拖拽，下滑或点击背景关闭
+- **智能初始尺寸与居中** — 自动适配屏幕，防止裁切或过度缩放
+- **沉浸式预览体验** — 高斯模糊背景，禁用底层交互，避免误触
+- **动态图片自动绑定** — 支持异步加载图片，实时监控 DOM 变化
+- **高度可扩展** — 可定制 `normalizeImageUrl()` 适配其他网站
+- **智能图标忽略** — 自动跳过 logo、导航按钮等非内容图（无需配置）
+- **链接拦截保障** — 点击 `<a><img>` 时优先预览，不跳转页面
+- **显式忽略支持** — 任意元素加 `data-yipeek-ignore` 即可全局禁用预览
 
+  
 ---
 
-## 🌐 已优化适配网站
+## 已优化适配网站
 
 - **GitHub** — 自动将 `/blob/` 地址转换为 raw URL，点击即可预览原图  
 - **其他网站** — 可通过修改脚本 `normalizeImageUrl()` 增加自定义规则  
 
 ---
 
-## 🖐️ 手势操作指南
+## 手势操作指南
 
 | 手势 / 操作 | 功能 |
 |------------|------|
 | 点击图片 | 打开预览 |
 | 双击 | 切换缩放（放大 ↔ 原始大小） |
-| 双指捏合 | 平滑缩放（自由比例 0.5× ~ 4×） |
+| 双指捏合 | 平滑缩放（0.5× ~ 4×） |
 | 拖拽 | 查看放大后的图片细节 |
 | 下滑或点击背景 | 关闭预览 |
-| 放大时拖拽 + 缩放边界限制 | 防止图片溢出屏幕 |
+| 放大拖拽限制 | 防止图片溢出屏幕 |
 
 ---
 
-## ⚙️ 脚本内部设计
+## 脚本内部设计
 
-- **`setPerfectInitialSize()` + `applyTransform()`**：自动计算最佳尺寸和居中位置  
-- **手势识别 + touch-action / pointer-events**：保证移动端流畅体验  
-- **GitHub URL normalize**：自动处理 blob → raw，避免跳页  
+- setPerfectInitialSize() + applyTransform() — 自动计算最佳尺寸和居中位置  
+- 手势识别 + touch-action / pointer-events — 保证移动端流畅体验  
+- GitHub URL normalize — 自动处理 blob → raw，避免跳页
 
 ---
 
@@ -78,7 +99,7 @@ MIT License — 免费用于个人和商业项目
 
 ---
 
-## ❤️ 说明
+## 说明
 
 - 图标来源已在 README 上方注明官方署名  
 - Yipeek 专注「指尖轻触，万象凝于一瞥」的**移动端原生**体验  
