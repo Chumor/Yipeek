@@ -15,8 +15,8 @@
   <a href="https://github.com/Chumor/yipeek/releases" title="Release">
     <img src="https://img.shields.io/github/v/release/Chumor/yipeek?color=007ACC&style=flat-square">
   </a>
-  <a href="https://opensource.org/licenses/MIT" title="MIT License">
-    <img src="https://img.shields.io/badge/license-MIT-blue?style=flat-square">
+  <a href="https://www.apache.org/licenses/LICENSE-2.0" title="Apache License 2.0">
+    <img src="https://img.shields.io/badge/license-Apache%202.0-blue?style=flat-square">
   </a>
   <img src="https://img.shields.io/badge/type-UserScript-yellow?style=flat-square" title="UserScript 脚本类型">
 </p>
@@ -94,7 +94,7 @@ Yipeek 是一款 **网页专用脚本**，专注移动端手势图片预览：
 
 ## 📄 许可证
 
-MIT License — 免费用于个人和商业项目  
+Apache License 2.0 — 免费用于个人和商业项目  
 详见 [LICENSE](./LICENSE)
 
 ---
